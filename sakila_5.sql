@@ -62,3 +62,26 @@ JOIN total_paid t ON t.customer_id = s.customer_id
 )
 SELECT * FROM merged_sum_pay;
 
+
+-- CREATING THE REPORT 
+WITH merged_sum_pay AS (
+SELECT 
+	s.first_name,
+    s.last_name,
+    s.email,
+    s.rental_count,
+    t.total_amount_spent
+FROM summarized_info s
+JOIN total_paid t ON t.customer_id = s.customer_id
+)
+
+SELECT 
+    first_name,
+    last_name,
+    email,
+    rental_count,
+    total_amount_spent AS total_paid,
+    ROUND(total_amount_spent / rental_count, 2) AS avg_payment_per_rental
+FROM merged_sum_pay
+ORDER BY avg_payment_per_rental DESC;
+
